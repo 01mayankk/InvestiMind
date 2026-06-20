@@ -5,6 +5,7 @@ import { ResearchResponse } from "../types/research";
 
 interface InvestmentSummaryCardProps {
   report: ResearchResponse;
+  isPdf?: boolean;
 }
 
 export default function InvestmentSummaryCard({ report }: InvestmentSummaryCardProps) {

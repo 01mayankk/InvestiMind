@@ -54,3 +54,13 @@ This file documents the prompts, responses, errors, corrections, and structural 
   ```typescript
   const result = (await investmentResearchGraph.invoke(initialState)) as unknown as GraphState;
   ```
+
+---
+
+## 4. UI/UX Workspace V2.1 Refactoring
+
+- **Terminal Redesign Rationale**: Flat dashboard scrolling created dashboard fatigue. We migrated to a left-sidebar grid switching model.
+- **Circular Ring Dashboards**: Transformed text numbers into circular SVG ring components with calculated stroke dasharray offsets to display Confidence, Risk, and Reliability.
+- **Quick Compare Side-by-Side**: Enabled side-by-side search lookup without modifications to backend APIs by orchestrating secondary async POST fetches locally inside the React comparison panel state.
+- **Local Searches & Command Palettes**: Added keyboard hotkey Ctrl+K listeners to trigger search overlay command modules and persist successful lookups locally via `localStorage.recentSearches`.
+

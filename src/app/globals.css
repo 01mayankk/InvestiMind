@@ -78,3 +78,72 @@ h1, h2, h3, h4, h5, h6 {
     rgba(15, 23, 42, 0) 100%
   );
 }
+
+/* Hide scrollbars for carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Glassmorphism overrides */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Custom indicator glows */
+.glow-strong-invest {
+  box-shadow: 0 0 20px -2px rgba(16, 185, 129, 0.2);
+}
+.dark .glow-strong-invest {
+  box-shadow: 0 0 25px -4px rgba(16, 185, 129, 0.35);
+}
+
+.glow-invest {
+  box-shadow: 0 0 15px -2px rgba(52, 211, 153, 0.15);
+}
+.dark .glow-invest {
+  box-shadow: 0 0 20px -4px rgba(52, 211, 153, 0.25);
+}
+
+.glow-hold {
+  box-shadow: 0 0 15px -2px rgba(6, 182, 212, 0.15);
+}
+.dark .glow-hold {
+  box-shadow: 0 0 20px -4px rgba(6, 182, 212, 0.25);
+}
+
+.glow-pass {
+  box-shadow: 0 0 15px -2px rgba(245, 158, 11, 0.15);
+}
+.dark .glow-pass {
+  box-shadow: 0 0 20px -4px rgba(245, 158, 11, 0.25);
+}
+
+.glow-strong-pass {
+  box-shadow: 0 0 20px -2px rgba(239, 68, 68, 0.15);
+}
+.dark .glow-strong-pass {
+  box-shadow: 0 0 25px -4px rgba(239, 68, 68, 0.3);
+}
+
+/* Spin animation for ring reveal */
+@keyframes ring-draw {
+  from {
+    stroke-dashoffset: 283;
+  }
+}
+.animate-ring-draw {
+  animation: ring-draw 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+

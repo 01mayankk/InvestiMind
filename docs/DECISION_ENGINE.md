@@ -49,3 +49,5 @@ This guarantees that a company is rated **fairly relative to its peers**, preven
 ## 3. Audit Trails & Reproducibility
 - **Fixed Algorithms**: The code inside `src/services/calculateInvestmentScore.ts` contains no random numbers, temperature variables, or stochastic models. Given the same inputs, it yields the exact same scores, drivers, and recommendations every time.
 - **Trace Auditing**: We output the full calculations under the `scoreBreakdown` field, which displays raw sub-scores before overall scaling. This allows an external analyst to manually recalculate and verify the platform's decision.
+- **V2.1 Visual Telemetry Trace**: The Audit tab in the terminal decomposes this telemetry into 5 collapsible panels. Analysts can toggle detailed logs for calculation trace weights, data sources coverage, and provider health timelines without dashboard clutter.
+

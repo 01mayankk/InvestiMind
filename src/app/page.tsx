@@ -117,24 +117,18 @@ export default function Home() {
 
       const data: ResearchResponse = await res.json();
       setReport(data);
+      try {
+        const list = localStorage.recentSearches ? JSON.parse(localStorage.recentSearches) : [];
+        const filtered = [data.ticker.toUpperCase(), ...list.filter((s: string) => s.toUpperCase() !== data.ticker.toUpperCase())].slice(0, 5);
+        localStorage.recentSearches = JSON.stringify(filtered);
+      } catch (e) {
+        console.error("Failed to save recent search:", e);
+      }
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err);
       alert(`Error running research: ${errMsg}`);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const getLoadingText = (step: number) => {
-    switch (step) {
-      case 0:
-        return "FinancialResearchNode: Querying Yahoo Finance for fundamental balances & sector ratios...";
-      case 1:
-        return "NewsAggregationNode: Cascading news fallbacks and crawling social sentiment...";
-      case 2:
-        return "InvestmentScoringNode: Mapping fundamentals against dynamic sector targets...";
-      default:
-        return "AIExplanationNode & ReportGenerationNode: Generating qualitative explainers via Gemini...";
     }
   };
 
@@ -308,18 +302,44 @@ export default function Home() {
           // Redesigned Shimmer Loading View
           <div className="space-y-6 max-w-7xl mx-auto px-4">
             {/* Steps Loader Display */}
-            <div className="max-w-md mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow flex items-center gap-4 animate-pulse">
-              <div className="w-10 h-10 rounded-full border-4 border-indigo-500/20 border-t-indigo-600 animate-spin flex-shrink-0" />
-              <div>
-                <span className="text-[9px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block">
-                  LangGraph Pipeline Executing
-                </span>
-                <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5">
-                  Running analysis for {query.toUpperCase()}...
-                </h3>
-                <p className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold mt-1">
-                  {getLoadingText(loadingStep)}
-                </p>
+            <div className="max-w-md mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-xl flex flex-col gap-4">
+              <div className="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div className="w-5 h-5 rounded-full border-2 border-indigo-500/20 border-t-indigo-600 animate-spin flex-shrink-0" />
+                <div>
+                  <span className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest block leading-none">
+                    AI Agent Workflow
+                  </span>
+                  <h3 className="text-sm font-extrabold text-slate-800 dark:text-slate-250 mt-1 leading-none">
+                    Analyzing {query.toUpperCase()}
+                  </h3>
+                </div>
+              </div>
+              <div className="space-y-2.5">
+                {[
+                  { label: "Fetch Financial Statements", step: 0 },
+                  { label: "Aggregate News & FinTwit Sentiment", step: 1 },
+                  { label: "Calculate Deterministic Scoring Ratios", step: 2 },
+                  { label: "Synthesize Explanation Narratives (Gemini 2.5)", step: 3 },
+                ].map((item, idx) => {
+                  const isDone = loadingStep > item.step;
+                  const isActive = loadingStep === item.step;
+                  return (
+                    <div key={idx} className="flex items-center gap-3 text-xs font-semibold">
+                      {isDone ? (
+                        <div className="w-4 h-4 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-[10px] font-black">
+                          ✓
+                        </div>
+                      ) : isActive ? (
+                        <div className="w-4 h-4 rounded-full border border-indigo-600 border-t-transparent animate-spin flex-shrink-0" />
+                      ) : (
+                        <div className="w-4 h-4 rounded-full border border-slate-200 dark:border-slate-800 flex-shrink-0" />
+                      )}
+                      <span className={`${isDone ? "text-slate-400 dark:text-slate-550 line-through" : isActive ? "text-indigo-600 dark:text-indigo-400 font-extrabold" : "text-slate-500"}`}>
+                        {item.label}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
             {/* Dashboard Mock Grid Shimmer */}
@@ -327,7 +347,7 @@ export default function Home() {
           </div>
         ) : (
           // Dashboard Report View
-          <DashboardView report={report!} onReset={() => { setReport(null); setQuery(""); }} />
+          <DashboardView report={report!} onReset={() => { setReport(null); setQuery(""); }} onSearch={executeSearch} />
         )}
       </main>
     </div>
