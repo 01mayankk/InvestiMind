@@ -126,3 +126,35 @@ Files Changed:
 
 Impact:
 Search queries that return quotes without symbols are ignored, forcing ticker validation to fail. The search query falls back to standard name parameters and gracefully degrades the data quality score instead of throwing a validation crash.
+
+---
+
+## 2026-06-20
+
+### UI/UX Refactor, Storytelling Annotations, Theme Persistence, and Documentation Cleanup
+
+Why:
+Resolve UI/UX problems such as unpolished dashboards, invalid theme icons, lack of loading shimmers, complex engineering log visual clutter, and text-heavy documentation.
+
+Files Changed:
+- [MODIFY] [globals.css](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/app/globals.css)
+- [MODIFY] [layout.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/app/layout.tsx)
+- [MODIFY] [page.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/app/page.tsx)
+- [MODIFY] [RadarComparisonChart.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/components/Charts/RadarComparisonChart.tsx)
+- [MODIFY] [SentimentPieChart.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/components/Charts/SentimentPieChart.tsx)
+- [MODIFY] [DashboardView.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/components/DashboardView.tsx)
+- [MODIFY] [InvestmentSummaryCard.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/components/InvestmentSummaryCard.tsx)
+- [MODIFY] [InvestmentHealthReport.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/components/InvestmentHealthReport.tsx)
+- [NEW] [NewsHighlights.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/components/NewsHighlights.tsx)
+- [NEW] [SkeletonDashboard.tsx](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/components/SkeletonDashboard.tsx)
+- [MODIFY] [README.md](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/README.md)
+
+Impact:
+- Refactored layout to follow Stripe/Vercel/Ramp design tokens with Outfit typography and soft-light background `#F7F8FC`.
+- Integrated a flash-free blocking stateful theme resolver script in Layout Head, correcting the Theme Toggle Moon/Sun icon switches with smooth 300ms transitions.
+- Created premium suggested stock tags, trending stock buttons, feature grids, and live search autocomplete landing layouts.
+- Built a custom shimmering `SkeletonDashboard` to pulse during active graph aggregation execution steps.
+- Re-ordered dashboard visual hierarchy to fit the requested storytelling format, and embedded a collapsible system audit log to reduce technical cognitive overload.
+- Added deep storytelling explanations inside the health report sliders, explaining the metric deltas vs benchmark targets.
+- Cleaned up the project structure display, system architecture DAG, and roadmap in `README.md`. All builds and type assertions pass with zero ESLint/TypeScript warnings.
+

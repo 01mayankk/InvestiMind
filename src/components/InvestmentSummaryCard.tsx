@@ -12,32 +12,32 @@ export default function InvestmentSummaryCard({ report }: InvestmentSummaryCardP
   const getRecommendationColors = (rec: string) => {
     switch (rec) {
       case "STRONG INVEST":
-        return "from-emerald-500/10 to-teal-500/10 border-emerald-500/30 text-emerald-400";
+        return "from-emerald-50 to-teal-50 dark:from-emerald-500/10 dark:to-teal-500/10 border-emerald-200 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-400";
       case "INVEST":
-        return "from-green-500/10 to-emerald-500/10 border-green-500/30 text-green-400";
+        return "from-green-50 to-emerald-50 dark:from-green-500/10 dark:to-emerald-500/10 border-green-200 dark:border-green-500/30 text-green-800 dark:text-green-400";
       case "HOLD":
-        return "from-cyan-500/10 to-sky-500/10 border-cyan-500/30 text-cyan-400";
+        return "from-cyan-50 to-sky-50 dark:from-cyan-500/10 dark:to-sky-500/10 border-cyan-200 dark:border-cyan-500/30 text-cyan-800 dark:text-cyan-400";
       case "PASS":
-        return "from-amber-500/10 to-orange-500/10 border-amber-500/30 text-amber-400";
+        return "from-amber-50 to-orange-50 dark:from-amber-500/10 dark:to-orange-500/10 border-amber-200 dark:border-amber-500/30 text-amber-800 dark:text-amber-400";
       default:
-        return "from-red-500/10 to-rose-500/10 border-red-500/30 text-red-400";
+        return "from-red-50 to-rose-50 dark:from-red-500/10 dark:to-rose-500/10 border-red-200 dark:border-red-500/30 text-red-800 dark:text-red-400";
     }
   };
 
   const getReliabilityColor = (reliability: number) => {
-    if (reliability >= 90) return "text-emerald-400";
-    if (reliability >= 75) return "text-green-400";
-    if (reliability >= 55) return "text-cyan-400";
-    if (reliability >= 35) return "text-amber-400";
-    return "text-red-400";
+    if (reliability >= 90) return "text-emerald-700 dark:text-emerald-400";
+    if (reliability >= 75) return "text-green-700 dark:text-green-400";
+    if (reliability >= 55) return "text-cyan-700 dark:text-cyan-400";
+    if (reliability >= 35) return "text-amber-700 dark:text-amber-400";
+    return "text-red-700 dark:text-red-400";
   };
 
   const getRiskColor = (score: number) => {
-    if (score <= 20) return "text-emerald-400";
-    if (score <= 40) return "text-green-400";
-    if (score <= 60) return "text-cyan-400";
-    if (score <= 80) return "text-amber-400";
-    return "text-red-400";
+    if (score <= 20) return "text-emerald-700 dark:text-emerald-400";
+    if (score <= 40) return "text-green-700 dark:text-green-400";
+    if (score <= 60) return "text-cyan-700 dark:text-cyan-400";
+    if (score <= 80) return "text-amber-700 dark:text-amber-400";
+    return "text-red-700 dark:text-red-400";
   };
 
   const recColorClass = getRecommendationColors(report.recommendation);

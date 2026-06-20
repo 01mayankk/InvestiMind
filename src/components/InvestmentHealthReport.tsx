@@ -53,6 +53,51 @@ export default function InvestmentHealthReport({ report }: InvestmentHealthRepor
     },
   ];
 
+  function getMetricNarrative(label: string, companyValue: number, industryValue: number, isBetter: boolean) {
+    const delta = Math.abs(companyValue - industryValue);
+    
+    if (companyValue === 0) {
+      if (label.includes("Profitability") || label.includes("Valuation") || label.includes("Market Position")) {
+        return "Financial data could not be retrieved; operating with reduced scoring confidence.";
+      }
+    }
+
+    switch (label) {
+      case "Financial Strength":
+        if (isBetter) {
+          return `Solvency score beats the sector benchmark baseline by ${delta.toFixed(0)} points, representing a strong balance sheet.`;
+        } else {
+          return `Solvency score trails the industry benchmark target by ${delta.toFixed(0)} points, indicating potential debt or liquidity risk.`;
+        }
+      case "Profitability (Net Margin)":
+        if (isBetter) {
+          return `Net margin is ${delta.toFixed(1)}% above the sector benchmark, contributing +${scoreBreakdown.profitabilityScore.toFixed(1)} points to the overall score.`;
+        } else {
+          return `Net margin trails the sector target by ${delta.toFixed(1)}%, indicating competitive or operational overhead pressures.`;
+        }
+      case "Valuation (P/E Ratio)":
+        if (isBetter) {
+          return `Trading at a P/E of ${companyValue.toFixed(1)}x, below the sector target ceiling of ${industryValue.toFixed(1)}x (+${scoreBreakdown.valuationScore.toFixed(1)} points).`;
+        } else {
+          return `At ${companyValue.toFixed(1)}x P/E, this stock trades at a premium over the sector target of ${industryValue.toFixed(1)}x.`;
+        }
+      case "Market Position (Gross Margin)":
+        if (isBetter) {
+          return `Gross margin of ${companyValue.toFixed(1)}% beats the benchmark target of ${industryValue.toFixed(1)}% by ${delta.toFixed(1)}%, demonstrating pricing power.`;
+        } else {
+          return `Gross margin of ${companyValue.toFixed(1)}% sits below the industry benchmark target of ${industryValue.toFixed(1)}%.`;
+        }
+      case "Risk Profile Score":
+        if (isBetter) {
+          return `Risk rating of ${companyValue}/100 is below the benchmark ceiling of 40, showing lower risk volatility.`;
+        } else {
+          return `Risk rating of ${companyValue}/100 exceeds the default baseline of 40, driven by sector volatility or news sentiments.`;
+        }
+      default:
+        return "";
+    }
+  }
+
   return (
     <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
       <div className="flex items-center gap-2 mb-6">
@@ -90,7 +135,7 @@ export default function InvestmentHealthReport({ report }: InvestmentHealthRepor
               </div>
 
               {/* Slider Track */}
-              <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full relative overflow-hidden">
+              <div className="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full relative overflow-hidden mb-1.5">
                 {/* Company value bar */}
                 <div
                   className={`h-full rounded-full transition-all ${
@@ -105,6 +150,11 @@ export default function InvestmentHealthReport({ report }: InvestmentHealthRepor
                   title="Industry Benchmark Target"
                 />
               </div>
+
+              {/* Storytelling annotation */}
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
+                {getMetricNarrative(metric.label, metric.companyValue, metric.industryValue, isBetter)}
+              </p>
             </div>
           );
         })}

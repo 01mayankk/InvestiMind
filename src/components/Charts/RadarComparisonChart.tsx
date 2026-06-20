@@ -11,6 +11,7 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
+import { AlertCircle } from "lucide-react";
 import { FinancialData } from "../../types/research";
 import { getBenchmarkForSector } from "../../config/industryBenchmarks";
 
@@ -21,9 +22,10 @@ interface RadarComparisonChartProps {
 export default function RadarComparisonChart({ financials }: RadarComparisonChartProps) {
   if (!financials || financials.peRatio === null) {
     return (
-      <div className="flex flex-col items-center justify-center w-full h-[240px] bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
-        <span className="text-sm font-semibold text-slate-400 dark:text-slate-500">Radar Chart Unavailable</span>
-        <span className="text-xs text-slate-400 dark:text-slate-500 mt-1">Financial metrics are required.</span>
+      <div className="flex flex-col items-center justify-center w-full h-[240px] bg-slate-50/50 dark:bg-slate-900/20 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 p-4 text-center">
+        <AlertCircle className="w-8 h-8 text-slate-400 dark:text-slate-550 mb-2" />
+        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Radar Chart Unavailable</span>
+        <span className="text-xs text-slate-400 dark:text-slate-500 mt-1">Financial data unavailable for this company.</span>
       </div>
     );
   }

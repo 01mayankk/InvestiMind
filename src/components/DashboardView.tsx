@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Download, RefreshCw, AlertTriangle, ShieldCheck } from "lucide-react";
+import { Download, RefreshCw, AlertTriangle, ShieldCheck, Cpu, ChevronDown, ChevronUp } from "lucide-react";
 import { ResearchResponse } from "../types/research";
 import InvestmentSummaryCard from "./InvestmentSummaryCard";
 import ExecutiveSummary from "./ExecutiveSummary";
@@ -13,6 +13,7 @@ import ConfidenceBreakdownView from "./ConfidenceBreakdownView";
 import DataFreshnessCenter from "./DataFreshnessCenter";
 import TransparencyPanel from "./TransparencyPanel";
 import ProviderHealthCenter from "./ProviderHealthCenter";
+import NewsHighlights from "./NewsHighlights";
 
 // Charts
 import GaugeChart from "./Charts/GaugeChart";
@@ -29,6 +30,7 @@ interface DashboardViewProps {
 
 export default function DashboardView({ report, onReset }: DashboardViewProps) {
   const [isExporting, setIsExporting] = useState(false);
+  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   const handleExportPDF = async () => {
     setIsExporting(true);
@@ -44,17 +46,17 @@ export default function DashboardView({ report, onReset }: DashboardViewProps) {
   return (
     <div className="space-y-8 w-full max-w-7xl mx-auto px-4 pb-16">
       {/* 1. Header Toolbar */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800 backdrop-blur-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 backdrop-blur-sm shadow-sm transition-colors duration-300">
         <div className="flex items-center gap-3">
           <div className="w-3.5 h-3.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-xs font-semibold text-slate-400">
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
             Analysis Complete • {report.companyName} ({report.ticker})
           </span>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <button
             onClick={onReset}
-            className="flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800/80 hover:bg-slate-800 hover:text-slate-100 rounded-xl transition-all border border-slate-700/50 w-full sm:w-auto"
+            className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 rounded-xl transition-all border border-slate-200 dark:border-slate-750/50 w-full sm:w-auto shadow-sm"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Analyze Another
@@ -62,7 +64,7 @@ export default function DashboardView({ report, onReset }: DashboardViewProps) {
           <button
             onClick={handleExportPDF}
             disabled={isExporting}
-            className="flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 rounded-xl transition-all w-full sm:w-auto shadow-md shadow-indigo-600/20"
+            className="flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 rounded-xl transition-all w-full sm:w-auto shadow shadow-indigo-600/20"
           >
             <Download className="w-3.5 h-3.5" />
             {isExporting ? "Compiling Report..." : "Export A4 PDF"}
@@ -75,84 +77,182 @@ export default function DashboardView({ report, onReset }: DashboardViewProps) {
         <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
           <div>
-            <h4 className="text-sm font-bold text-amber-500 dark:text-amber-400">
+            <h4 className="text-sm font-bold text-amber-600 dark:text-amber-400">
               Analysis Running with Degraded Inputs
             </h4>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-              Some metrics or recent news items could not be retrieved from active providers. Point deductions have been applied, and confidence values are reduced.
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
+              Some metrics or news coverage items could not be retrieved from active providers. Point deductions have been applied, and confidence values are reduced. Expand the Advanced logs below for impact reports.
             </p>
           </div>
         </div>
       )}
 
-      {/* 3. Interactive Web Dashboard Grid */}
+      {/* 3. Executive Dashboard Content Grid (Primary Executive View) */}
       <div className="space-y-8">
-        {/* Row 1: Summary Card */}
-        <InvestmentSummaryCard report={report} />
-
-        {/* Row 2: Executive Summary */}
-        <ExecutiveSummary report={report} />
-
-        {/* Row 3: Missing Data Details (if any) */}
-        <MissingDataImpactCenter report={report} />
-
-        {/* Row 4: Explainability & Slider Health */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ExplainabilityCenter report={report} />
-          <InvestmentHealthReport report={report} />
+        {/* Row 1: Recommendation summary card (Hero section) */}
+        <div className="hover-card-lift">
+          <InvestmentSummaryCard report={report} />
         </div>
 
-        {/* Row 5: Detailed Score Matrix Table */}
-        <ScoreContributionView report={report} />
+        {/* Row 2: Qualitative Executive Summary */}
+        <ExecutiveSummary report={report} />
 
-        {/* Row 6: Interactive Charts */}
-        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
+        {/* Row 3: Explainability Center (Top positive drivers & Concerns checklist) */}
+        <ExplainabilityCenter report={report} />
+
+        {/* Row 4: Visual Analytics / Gauges Panel */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
           <div className="flex items-center gap-2 mb-6">
-            <ShieldCheck className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
+            <ShieldCheck className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
-              Research Visual Analytics
+              Visual Research Analytics
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="flex flex-col items-center">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Overall Score Gauge</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-col items-center p-4 bg-slate-50/50 dark:bg-slate-950/40 rounded-xl border border-slate-100 dark:border-slate-850">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-550 uppercase tracking-widest mb-4">Overall Score</span>
               <GaugeChart score={report.overallScore} label="Overall Score" color="#4F46E5" />
             </div>
-            <div className="flex flex-col items-center">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Risk Score Gauge</span>
+            <div className="flex flex-col items-center p-4 bg-slate-50/50 dark:bg-slate-950/40 rounded-xl border border-slate-100 dark:border-slate-850">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-550 uppercase tracking-widest mb-4">Risk Rating</span>
               <GaugeChart score={report.riskScore} label="Risk Rating" color="#EF4444" />
             </div>
-            <div className="flex flex-col items-center">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">News Sentiment Ratio</span>
+            <div className="flex flex-col items-center p-4 bg-slate-50/50 dark:bg-slate-950/40 rounded-xl border border-slate-100 dark:border-slate-850">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-550 uppercase tracking-widest mb-4">News Sentiment Ratio</span>
               <SentimentPieChart news={report.newsData} />
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Benchmark Mapping</span>
-              <RadarComparisonChart financials={report.financialData} />
             </div>
           </div>
 
           <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800/60">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-4">Financial Components Breakdown</span>
+            <span className="text-[10px] font-bold text-slate-400 dark:text-slate-550 uppercase tracking-widest block mb-4">Sub-Components breakdown</span>
             <ScoreBarChart scoreBreakdown={report.scoreBreakdown} />
           </div>
         </div>
 
-        {/* Row 7: Caching, Freshness, and Reliability Breakdowns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <ConfidenceBreakdownView report={report} />
-          <DataFreshnessCenter report={report} />
+        {/* Row 5: News Highlights titles list */}
+        <NewsHighlights news={report.newsData} />
+
+        {/* Row 6: Qualitative Thesis & Bull/Bear Outlooks */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Thesis */}
+          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-450 border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+              Investment Thesis
+            </h4>
+            <ul className="space-y-3">
+              {report.aiAnalysis.thesis.map((pt, idx) => (
+                <li key={idx} className="text-xs font-medium text-slate-600 dark:text-slate-350 leading-relaxed flex items-start gap-2">
+                  <span className="text-emerald-500 font-bold text-sm mt-0.5">•</span>
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Counter Thesis */}
+          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-450 border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+              Counter Thesis / Key Risks
+            </h4>
+            <ul className="space-y-3">
+              {report.aiAnalysis.counterThesis.map((pt, idx) => (
+                <li key={idx} className="text-xs font-medium text-slate-600 dark:text-slate-350 leading-relaxed flex items-start gap-2">
+                  <span className="text-rose-500 font-bold text-sm mt-0.5">•</span>
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* Row 8: Provider Health stats */}
-        <ProviderHealthCenter report={report} />
+        {/* Bull / Bear Narratives Panel */}
+        <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300 space-y-5">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-500 block">Bull Case Outlook</span>
+            <p className="text-xs font-medium text-slate-650 dark:text-slate-350 leading-relaxed mt-1.5">
+              {report.aiAnalysis.bullCase}
+            </p>
+          </div>
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-800/60">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-500 block">Bear Case Outlook</span>
+            <p className="text-xs font-medium text-slate-650 dark:text-slate-350 leading-relaxed mt-1.5">
+              {report.aiAnalysis.bearCase}
+            </p>
+          </div>
+        </div>
 
-        {/* Row 9: Source & AI Transparency Panels */}
-        <TransparencyPanel report={report} />
+        {/* Row 7: Industry Comparison (Radar mapping & Benchmarks list) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <InvestmentHealthReport report={report} />
+          <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-6">
+                <ShieldCheck className="w-5 h-5 text-indigo-500" />
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+                  Sector Benchmark Comparison
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-6">
+                Ratios are mapped compared to peer metrics for the **{report.sector}** sector. This limits wrong recommendations for asset-heavy or high-leverage entities.
+              </p>
+            </div>
+            <div className="flex items-center justify-center p-4 bg-slate-50/50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-850 rounded-2xl h-[280px]">
+              <RadarComparisonChart financials={report.financialData} />
+            </div>
+          </div>
+        </div>
+
+        {/* Row 8: Collapsible Advanced Analysis Accordion */}
+        <div className="border border-slate-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 overflow-hidden shadow-sm transition-all duration-300">
+          <button
+            onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+            className="w-full flex justify-between items-center p-6 text-left hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-all focus:outline-none"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <Cpu className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-150">
+                  Advanced Audit Log & System Trace
+                </h3>
+                <p className="text-[10px] text-slate-450 dark:text-slate-500 mt-0.5 font-semibold">
+                  Detailed score calculations, data fresh index, API provider latencies, and governance transparency.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-[10px] font-black tracking-wider text-indigo-650 dark:text-indigo-400">
+              <span>{isAdvancedOpen ? "COLLAPSE AUDITS" : "EXPAND AUDITS"}</span>
+              {isAdvancedOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </div>
+          </button>
+
+          {isAdvancedOpen && (
+            <div className="p-6 border-t border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-950/10 space-y-8 transition-all">
+              {/* Score breakdown table */}
+              <ScoreContributionView report={report} />
+
+              {/* Missing data impact details */}
+              <MissingDataImpactCenter report={report} />
+
+              {/* Confidence breakdown & freshness values */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <ConfidenceBreakdownView report={report} />
+                <DataFreshnessCenter report={report} />
+              </div>
+
+              {/* Provider Health index */}
+              <ProviderHealthCenter report={report} />
+
+              {/* Source & AI Governance transparency */}
+              <TransparencyPanel report={report} />
+            </div>
+          )}
+        </div>
 
         {/* Legal Disclaimer Row */}
-        <div className="p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 rounded-xl text-center text-[10px] text-slate-400 dark:text-slate-500 font-semibold tracking-wide">
+        <div className="p-4 bg-slate-100/50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-2xl text-center text-[10px] text-slate-400 dark:text-slate-500 font-semibold tracking-wide">
           DISCLAIMER: This analysis is for educational and research purposes only and should not be considered financial advice.
         </div>
       </div>

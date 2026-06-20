@@ -2,6 +2,7 @@
 
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { AlertCircle } from "lucide-react";
 import { NewsItem } from "../../types/research";
 
 interface SentimentPieChartProps {
@@ -11,9 +12,10 @@ interface SentimentPieChartProps {
 export default function SentimentPieChart({ news }: SentimentPieChartProps) {
   if (!news || news.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center w-full h-[220px] bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
-        <span className="text-sm font-semibold text-slate-400 dark:text-slate-500">News Sentiment Unavailable</span>
-        <span className="text-xs text-slate-400 dark:text-slate-500 mt-1">No headlines found to analyze.</span>
+      <div className="flex flex-col items-center justify-center w-full h-[220px] bg-slate-50/50 dark:bg-slate-900/20 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 p-4 text-center">
+        <AlertCircle className="w-8 h-8 text-slate-400 dark:text-slate-550 mb-2" />
+        <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Sentiment Chart Unavailable</span>
+        <span className="text-xs text-slate-400 dark:text-slate-500 mt-1">No recent news headlines available for this company.</span>
       </div>
     );
   }

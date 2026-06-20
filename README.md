@@ -1,148 +1,186 @@
-# InvestiMind AI – Intelligent Investment Research Powered by Explainable AI
+# 🛡️ InvestiMind AI
+### *Explainable Investment Research Agent Powered by LangGraph & Gemini*
 
-InvestiMind AI is a production-grade, highly explainable, transparent, and auditable AI-driven investment research platform. It accepts a stock ticker or company name, aggregates financial metrics and media headlines, and computes a 100% deterministic score. A single Gemini 2.5 Flash API call is used purely to synthesize human-readable explainable narratives.
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/01mayankk/InvestiMind)
+[![Next.js](https://img.shields.io/badge/framework-Next.js%2014-black.svg)](https://nextjs.org/)
+[![LangGraph](https://img.shields.io/badge/workflow-LangGraph--JS-purple.svg)](https://github.com/langchain-ai/langgraphjs)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
----
-
-## 1. Core Feature Highlights
-- **Deterministic scoring core**: AI has **0% influence** on scores, recommendations, risk limits, or reliability values.
-- **Explainability Center**: High-impact checklists ("Why Not Higher?" and "Why Not Lower?") explain score drags and support levels based on dynamic sector targets.
-- **Double-Score Assessment**: Mutually isolated indices for Data Confidence (source completeness and freshness) and Recommendation Reliability (mathematical validity).
-- **Missing Data Impact Center**: Logs specific point penalties (-25 for financials, -12 for news) and lists affected components if any databases fail or keys are absent.
-- **Provider & AI Transparency Panel**: Displays latency timelines, fallback statuses, and explicitly states where AI was used (narratives) vs. where it was strictly restricted (math/decisions).
-- **Multi-Page A4 PDF Exporter**: Captured page-by-page from DOM elements to generate a clean 5-page PDF report.
+InvestiMind AI is a premium, production-grade investment research platform designed to automate financial analysis with absolute mathematical transparency. The engine guarantees that generative AI has **0% influence** over scores, recommendations, risk limits, or reliability values. LLMs are used exclusively to synthesize explainable qualitative summaries based on deterministic scoring outputs.
 
 ---
 
-## 2. System Workflow (LangGraph)
+## 🗺️ System Architecture & Workflow
+
+The research process is orchestrated as a directed acyclic graph (DAG) via **LangGraph**, routing queries through sequential nodes to fetch data, compute metrics, and generate narrative explanations.
 
 ```mermaid
 graph TD
-    START([START]) --> FinancialResearchNode[FinancialResearchNode]
-    FinancialResearchNode --> NewsAggregationNode[NewsAggregationNode]
-    NewsAggregationNode --> InvestmentScoringNode[InvestmentScoringNode]
-    InvestmentScoringNode --> AIExplanationNode[AIExplanationNode]
-    AIExplanationNode --> ReportGenerationNode[ReportGenerationNode]
+    START([START]) --> FinancialResearchNode["🔍 FinancialResearchNode<br/>(Yahoo Finance Client)"]
+    FinancialResearchNode --> NewsAggregationNode["📰 NewsAggregationNode<br/>(GNews / NewsAPI / FinTwit Scraper)"]
+    NewsAggregationNode --> InvestmentScoringNode["🔢 InvestmentScoringNode<br/>(Deterministic Engine)"]
+    InvestmentScoringNode --> AIExplanationNode["🤖 AIExplanationNode<br/>(Gemini Synthesis)"]
+    AIExplanationNode --> ReportGenerationNode["📄 ReportGenerationNode<br/>(A4 PDF Compiler & State Freeze)"]
     ReportGenerationNode --> END([END])
+
+    style START fill:#4F46E5,stroke:#4F46E5,stroke-width:2px,color:#fff
+    style END fill:#10B981,stroke:#10B981,stroke-width:2px,color:#fff
+    style FinancialResearchNode fill:#fff,stroke:#E5E7EB,stroke-width:2px,color:#000
+    style NewsAggregationNode fill:#fff,stroke:#E5E7EB,stroke-width:2px,color:#000
+    style InvestmentScoringNode fill:#6366F1,stroke:#4F46E5,stroke-width:2px,color:#fff
+    style AIExplanationNode fill:#fff,stroke:#E5E7EB,stroke-width:2px,color:#000
+    style ReportGenerationNode fill:#fff,stroke:#E5E7EB,stroke-width:2px,color:#000
 ```
 
 ---
 
-## 3. Project Directory Structure
+## 🚀 Key Feature Showcase
+
+| Feature Component | Functionality & Rationale | Business Value |
+| :--- | :--- | :--- |
+| **🔢 Deterministic Math Core** | Scores are computed using hardcoded sector target benchmarks (P/E targets, Net Margins, Debt-to-Equity thresholds). | Guarantees auditability and removes AI hallucination risks. |
+| **💡 Explainability Center** | Displays exact positive support drivers and score drags (`Why Not Higher?` / `Why Not Lower?`). | Allows analysts to understand recommendation reasons in seconds. |
+| **🛡️ Double-Score Assessment** | Isolates **Data Confidence** (coverage, freshness) from **Recommendation Reliability** (mathematical completeness). | Identifies thin-data situations and degraded environments. |
+| **📊 Dynamic Sector Benchmarks** | Evaluates metrics relative to specific sectors (e.g., Tech P/E target of 22x vs. Energy target of 12x). | Context-aware comparisons preventing false positives/negatives. |
+| **⚡ Multi-Channel Fallbacks** | Cascades from GNews to NewsAPI, then down to live Twitter scrapers via Apify. | Bulletproof resilience against API request limits or network blocks. |
+| **📄 Professional PDF Compiler** | Compiles state-frozen sections into high-fidelity multi-page A4 PDF documents. | Instantly shareable research reports for investment committees. |
+
+---
+
+## 🎨 Visual Preview & Screenshots
+
+Here is the fully refactored, high-contrast, premium interface of InvestiMind AI:
+
+### 1. Master Research Dashboard
+![Master Research Dashboard](file:///C:/Users/01may/.gemini/antigravity-ide/brain/47700971-47dc-4475-9a29-8073b9f77dc5/media__1781973237724.png)
+
+### 2. Investment Health Sliders & Data Transparency
+![Health Sliders](file:///C:/Users/01may/.gemini/antigravity-ide/brain/47700971-47dc-4475-9a29-8073b9f77dc5/media__1781973806064.png)
+
+### 3. Score Contribution Details
+![Score Contribution Details](file:///C:/Users/01may/.gemini/antigravity-ide/brain/47700971-47dc-4475-9a29-8073b9f77dc5/media__1781973818431.png)
+
+### 4. Advanced Audit Log & System Trace (Collapsible)
+![Advanced Audit Log](file:///C:/Users/01may/.gemini/antigravity-ide/brain/47700971-47dc-4475-9a29-8073b9f77dc5/media__1781973834783.png)
+
+---
+
+## 📦 Project Directory Structure
 
 ```
 src/
-  app/
-    api/
-      research/
-        route.ts
-    layout.tsx
-    page.tsx
-  components/
-    DashboardView.tsx
-    InvestmentSummaryCard.tsx
-    ExecutiveSummary.tsx
-    ExplainabilityCenter.tsx
-    InvestmentHealthReport.tsx
-    ScoreContributionView.tsx
-    MissingDataImpactCenter.tsx
-    ConfidenceBreakdownView.tsx
-    DataFreshnessCenter.tsx
-    TransparencyPanel.tsx
-    ProviderHealthCenter.tsx
-    Charts/
-      GaugeChart.tsx
-      ScoreBarChart.tsx
-      SentimentPieChart.tsx
-      RadarComparisonChart.tsx
-  agents/
-    investmentResearchGraph.ts
-  tools/
-    yahooFinanceTool.ts
-    newsFetcherTool.ts
-  services/
-    cache/
-      cacheProvider.ts
-      memoryCacheProvider.ts
-    fetchCompanyFinancials.ts
-    fetchCompanyNews.ts
-    calculateInvestmentScore.ts
-    generateInvestmentAnalysis.ts
-  config/
-    scoringRules.ts
-    industryBenchmarks.ts
-  types/
-    research.ts
-  lib/
-    pdfExporter.ts
-    tailwindMergeUtility.ts
-  hooks/
-    useTheme.ts
-  docs/
-    ARCHITECTURE.md
-    API.md
-    DECISION_ENGINE.md
-    SCORING_METHODOLOGY.md
-    SETUP.md
-    DEPLOYMENT.md
-    CONTRIBUTING.md
-    FUTURE_ROADMAP.md
-    AI_DEVELOPMENT_LOG.md
-    PROJECT_GENERATION_PROMPT.md
+├── app/                      # Web Client Routing & Server API Endpoints
+│   ├── api/
+│   │   └── research/
+│   │       └── route.ts      # Orchestrates LangGraph execution and outputs reports
+│   ├── layout.tsx            # Global HTML template containing theme injectors
+│   └── page.tsx              # Autocomplete search dashboard & theme switch controller
+├── components/               # High-contrast, theme-reactive user interfaces
+│   ├── Charts/               # Chart components (Gauges, Pie, and Comparison bars)
+│   │   ├── GaugeChart.tsx
+│   │   ├── RadarComparisonChart.tsx
+│   │   └── SentimentPieChart.tsx
+│   ├── DashboardView.tsx     # Master Layout orchestrating visual research panels
+│   ├── InvestmentSummaryCard.tsx # Hero badge showing recommendation, strength & scores
+│   ├── ExecutiveSummary.tsx      # Highlights AI narrative text & bull/bear bullet cards
+│   ├── ExplainabilityCenter.tsx  # Checks support limits and metrics drag lists
+│   ├── InvestmentHealthReport.tsx # Sliders displaying fundamentals vs industry averages
+│   ├── NewsHighlights.tsx        # High-contrast sentiment-grouped headlines
+│   ├── MissingDataImpactCenter.tsx # Warning notification mapping missing metrics points
+│   ├── TransparencyPanel.tsx     # Charts representing exact AI contribution limits
+│   └── SkeletonDashboard.tsx     # Shimmer-loader mirroring the layout during active analysis
+├── agents/                   # Orchestration workflow
+│   └── investmentResearchGraph.ts # Defines node states, bindings, and transitions
+├── services/                 # core scoring and retrieval services
+│   ├── calculateInvestmentScore.ts # Standardized mathematical scoring algorithms
+│   ├── generateInvestmentAnalysis.ts # Contextual prompt compiler for Gemini API
+│   ├── fetchCompanyFinancials.ts  # Fetches quarterly balances from Yahoo Finance
+│   └── fetchCompanyNews.ts        # Coordinates multi-channel news aggregator flows
+├── tools/                    # API Clients
+│   ├── yahooFinanceTool.ts        # Client query client wrapper for stock metrics
+│   └── newsFetcherTool.ts         # Handles NewsAPI, GNews, and Apify Twitter aggregations
+├── config/                   # Target limits
+│   ├── industryBenchmarks.ts      # Margin, debt-to-equity, and P/E sector baselines
+│   └── scoringRules.ts            # Scoring maps and decision threshold bounds
+├── types/                    # Domain Schemas
+│   └── research.ts                # Zod schemas & TypeScript type interfaces
+└── lib/                      # Base helper packages
+    ├── pdfExporter.ts             # Captures DOM canvases for high-fidelity A4 printing
+    └── tailwindMergeUtility.ts    # Class merger utilities
 ```
+
+<details>
+<summary><b>📂 Folder Responsibilities Breakdown</b></summary>
+
+* **`src/app`**: Web router & API handlers. Core responsibility is handling web layouts and serving API requests.
+* **`src/components`**: Theme-aware rendering blocks. Custom-tailored to offer clean visual feedback for light and dark environments.
+* **`src/agents`**: Sequential graph mapping. Controls execution states and guarantees complete fallback coverage.
+* **`src/services`**: Calculation and retrieval core. Contains the business logic for scoring formulas and prompt compilation.
+* **`src/tools`**: Low-level network connectors. Communicates with financial APIs and social media scraper actors.
+* **`src/config`**: Benchmark configurations. Controls the numerical limits of the scoring formulas.
+* **`src/types`**: Type validations. Ensures strong static safety throughout the system.
+</details>
 
 ---
 
-## 4. Setup & Installation
+## 🛠️ Technology Stack & Dependencies
 
-### Environment Configurations
-Create a `.env` file in the root directory:
+| Category | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Core Client** | Next.js 14 (App Router) | High-performance React framework for layouts & API endpoints. |
+| **State Router** | `@langchain/langgraph` | Directs node routes, fallback chains, and compilation logic. |
+| **LLM Core** | Gemini 2.5 Flash | Provides rapid, explainable qualitative investment summaries. |
+| **Financial API** | `yahoo-finance2` | Fetches historical balances and sector data. |
+| **Styling** | Tailwind CSS & Vanilla CSS | Enables premium typography (Outfit & Inter) and soft-light colors. |
+| **Data Validation** | `zod` | Enforces type safety at boundary APIs. |
+
+---
+
+## 🏁 Quick Start & Local Setup
+
+### 1. Environment Configurations
+Create a `.env` file in the root folder of the project:
 ```env
 GEMINI_API_KEY=your_gemini_api_key
-GNEWS_API_KEY=your_gnews_key
-NEWS_API_KEY=your_newsapi_key
-APIFY_API_TOKEN=your_apify_token
-NEXT_PUBLIC_APP_NAME=InvestiMind AI
+GNEWS_API_KEY=your_gnews_api_key
+NEWS_API_KEY=your_news_api_key
+APIFY_API_TOKEN=your_apify_api_token
+NEXT_PUBLIC_APP_NAME="InvestiMind AI"
 ```
 
-### Installation
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### Run Web Development Server
+### 3. Run Development Server
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-### Run Local CLI Runner
+### 4. Run CLI Runner (Terminal)
+Evaluate a stock research node workflow directly from your command line:
 ```bash
-# Windows Powershell:
-$env:TS_NODE_COMPILER_OPTIONS='{"module":"commonjs","target":"es2020"}'; npx ts-node src/scripts/testWorkflow.ts MSFT
+# Windows PowerShell
+$env:TS_NODE_COMPILER_OPTIONS='{"module":"commonjs","target":"es2020"}'; npx ts-node src/scripts/testWorkflow.ts NVDA
 
-# Linux / macOS:
-TS_NODE_COMPILER_OPTIONS='{"module":"commonjs","target":"es2020"}' npx ts-node src/scripts/testWorkflow.ts MSFT
+# macOS / Linux
+TS_NODE_COMPILER_OPTIONS='{"module":"commonjs","target":"es2020"}' npx ts-node src/scripts/testWorkflow.ts NVDA
 ```
----
-
-## 5. Architectural Trade-offs & Rationale
-1. **In-Memory Caching vs. Redis**: We opted for memory caching (`memoryCacheProvider.ts`) to avoid database dependencies. This simplifies setup and keeps Vercel deployments serverless, but caches are local to the container instance. Caching contract provider interfaces are in place to plug in Redis if scaled.
-2. **Sequential News Fetching vs. Concurrent Requests**: Fetching news sequentially allows GNews fallback checks (GNews -> NewsAPI -> Apify Twitter Scraper) to stop immediately when a provider succeeds, conserving API token quotes. A strict 5-second to 9-second timeout on each fetch ensures slow APIs do not block serverless execution.
-3. **HTML Canvas capture vs. PDF Raw Layouts**: Raw PDF generation libraries (like `@react-pdf/renderer`) require recreating CSS layouts. We chose `html2canvas` + `jspdf` to convert the rendered dashboard, preserving charts, styles, and alignments in a high-fidelity 5-page PDF format.
 
 ---
 
-## 6. Guides & Manuals
+## 📘 Detailed Documentation Guides
 
-### Local Setup
-For step-by-step instructions on setting up environment variables, running the local development server, linting, type checking, and running tests:
-* Refer to the [Local Development Guide](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/docs/LOCAL_DEVELOPMENT_GUIDE.md).
+To review further components of the codebase:
+- 📖 [Local Development Guide](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/docs/LOCAL_DEVELOPMENT_GUIDE.md) - Details setup commands, testing suites, and lint configurations.
+- 📖 [Vercel Deployment Guide](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/docs/VERCEL_DEPLOYMENT_GUIDE.md) - Guides you on importing codebases to Vercel and handling API env values.
+- 📖 [Submission Checklist](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/docs/SUBMISSION_CHECKLIST.md) - Contains the final compliance verification checklists.
 
-### Deployment
-For detailed steps on uploading your project to GitHub, deploying serverless instances on Vercel, and configuring environment credentials:
-* Refer to the [Vercel Deployment Guide](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/docs/VERCEL_DEPLOYMENT_GUIDE.md).
+---
 
-### Submission Checklist
-For the final audit check before sharing the code or submitting the assignment:
-* Refer to the [Submission Checklist](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/docs/SUBMISSION_CHECKLIST.md).
+## 🔮 Future Roadmap
+- [ ] **Real-time SEC Filings Parsing**: Expand research agents to parse Form 10-K and 10-Q documents directly using text extraction nodes.
+- [ ] **Multi-Stock Comparison Models**: Generate side-by-side benchmarking radars comparing up to 4 symbols in the same sector.
+- [ ] **Scheduled Automated Portfolio Reviews**: Allow users to configure cron triggers running portfolio score updates every week, delivering results to Slack or email.
