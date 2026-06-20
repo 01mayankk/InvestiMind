@@ -9,7 +9,7 @@ export interface YahooFinanceResult {
 }
 
 interface SearchQuote {
-  symbol: string;
+  symbol?: string;
   shortname?: string;
   longname?: string;
   quoteType?: string;
@@ -52,22 +52,28 @@ export async function searchTicker(query: string): Promise<{ ticker: string; nam
       // Let's verify it by searching
       const searchRes = (await yahooFinance.search(trimmed)) as unknown as SearchResponse;
       if (searchRes.quotes && searchRes.quotes.length > 0) {
-        const bestMatch = searchRes.quotes[0];
-        return {
-          ticker: bestMatch.symbol,
-          name: bestMatch.shortname || bestMatch.longname || bestMatch.symbol,
-        };
+        const validQuotes = searchRes.quotes.filter((q) => q.symbol);
+        if (validQuotes.length > 0) {
+          const bestMatch = validQuotes[0];
+          return {
+            ticker: bestMatch.symbol!,
+            name: bestMatch.shortname || bestMatch.longname || bestMatch.symbol!,
+          };
+        }
       }
     }
 
     // Otherwise, search for name
     const searchRes = (await yahooFinance.search(query)) as unknown as SearchResponse;
     if (searchRes.quotes && searchRes.quotes.length > 0) {
-      const bestMatch = searchRes.quotes.find((q: SearchQuote) => q.quoteType === "EQUITY") || searchRes.quotes[0];
-      return {
-        ticker: bestMatch.symbol,
-        name: bestMatch.shortname || bestMatch.longname || bestMatch.symbol,
-      };
+      const validQuotes = searchRes.quotes.filter((q) => q.symbol);
+      if (validQuotes.length > 0) {
+        const bestMatch = validQuotes.find((q: SearchQuote) => q.quoteType === "EQUITY") || validQuotes[0];
+        return {
+          ticker: bestMatch.symbol!,
+          name: bestMatch.shortname || bestMatch.longname || bestMatch.symbol!,
+        };
+      }
     }
     return null;
   } catch (err) {
