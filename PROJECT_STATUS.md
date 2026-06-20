@@ -111,3 +111,18 @@ Files Changed:
 
 Impact:
 Project ready for deployment, testing, and submission.
+
+---
+
+## 2026-06-20
+
+### Fixed Non-Public Search Graceful Degradation Bug
+
+Why:
+Queries for private or non-public companies (like "FLIPKART") returned search matches from Yahoo Finance that had no stock ticker symbol (`symbol` was `undefined`). This bypassed search validation checks and caused downstream type validation crashes (ZodError) in the report generation node.
+
+Files Changed:
+- [MODIFY] [yahooFinanceTool.ts](file:///c:/Users/01may/OneDrive/Desktop/ai-agent/src/tools/yahooFinanceTool.ts)
+
+Impact:
+Search queries that return quotes without symbols are ignored, forcing ticker validation to fail. The search query falls back to standard name parameters and gracefully degrades the data quality score instead of throwing a validation crash.
